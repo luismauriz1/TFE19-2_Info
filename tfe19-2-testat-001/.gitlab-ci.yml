@@ -1,0 +1,40 @@
+default:
+  image: ubuntu:bionic
+  before_script:
+    - apt-get update
+    - |
+      apt-get install -y cmake \
+                         build-essential \
+                         ccache \
+                         clang-tidy \
+                         clang-format \
+                         iwyu \
+                         git
+    - git clone --branch 2.2 https://github.com/danmar/cppcheck.git
+    - pushd cppcheck
+    - mkdir build
+    - pushd build
+    - cmake ..
+    - cmake --build . --clean-first --target install
+    - popd
+    - popd
+
+
+stages:
+    - build
+    - test
+    - deploy
+
+cmake:
+  stage: build
+  script:
+   - mkdir build
+   - cd build
+   - cmake -DENABLE_CPPCHECK=ON -DENABLE_CLANG_TIDY=ON ..
+   - cmake --build . --clean-first
+#  artifacts:
+#    paths:
+#        - build
+
+
+
