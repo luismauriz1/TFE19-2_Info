@@ -17,6 +17,7 @@ int main(int argc, char **argv)
     app.parse(argc, argv);
   } catch (const CLI::ParseError &e) {
     return app.exit(e);
+    Hoffentlich klappt das ;)
   }
 
   /**
